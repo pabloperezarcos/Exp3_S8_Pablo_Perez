@@ -7,13 +7,15 @@ import jakarta.persistence.GeneratedValue; // Para especificar cómo se generan 
 import jakarta.persistence.GenerationType; // Enumeración que define los diferentes tipos de estrategias de generación de claves primarias
 import jakarta.persistence.Id; // Para especificar que un atributo es una clave primaria de la entidad
 import jakarta.persistence.Table; // Para especificar el nombre de la tabla en la base de datos a la que se mapea la entidad
+import jakarta.persistence.SequenceGenerator; // Para especificar el uso de una secuencia en la generación de claves primarias
 
 @Entity
 @Table(name = "usuarios")
+@SequenceGenerator(name = "usuarioSeq", sequenceName = "usuarios_seq", allocationSize = 1)
 public class Usuarios {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuarioSeq")
     @Column(name = "id")
     private int id;
 

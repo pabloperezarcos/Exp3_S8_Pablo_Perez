@@ -44,33 +44,3 @@ public class UsuariosController {
         usuariosService.deleteUsuario(id);
     }
 }
-
-/*
- * // Método para obtener usuarios por rol (filtro)
- * 
- * @GetMapping("/usuarios/rol/{rol}")
- * public ResponseEntity<?> obtenerUsuariosPorRol(@PathVariable String rol) {
- * // Creamos una lista para almacenar los usuarios que coincidan con el rol
- * List<Usuarios> usuariosPorRol = new ArrayList<>();
- * for (Usuarios usuario : usuarios) {
- * // Verificamos si el rol del usuario coincide (ignorando
- * mayúsculas/minúsculas)
- * if (usuario.getRol().equalsIgnoreCase(rol)) {
- * // Si el rol coincide, agregamos el usuario a la lista
- * usuariosPorRol.add(usuario);
- * }
- * }
- * // Verificamos si se encontraron usuarios con el rol especificado
- * if (!usuariosPorRol.isEmpty()) {
- * // Si todo salió bien, devolvemos un código de estado OK y la lista de
- * usuarios
- * return ResponseEntity.ok(usuariosPorRol);
- * } else {
- * // Si no se encontraron usuarios, devolvemos un mensaje de error
- * String mensaje = "No se encontraron usuarios con el rol: " + rol;
- * System.out.println(mensaje); // Mostramos el mensaje por consola
- * return ResponseEntity.status(HttpStatus.NOT_FOUND).body(mensaje);
- * }
- * }
- * }
- */
