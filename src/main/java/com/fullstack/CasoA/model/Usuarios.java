@@ -9,27 +9,38 @@ import jakarta.persistence.Id; // Para especificar que un atributo es una clave 
 import jakarta.persistence.Table; // Para especificar el nombre de la tabla en la base de datos a la que se mapea la entidad
 import jakarta.persistence.SequenceGenerator; // Para especificar el uso de una secuencia en la generación de claves primarias
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 @Entity
 @Table(name = "usuarios")
 @SequenceGenerator(name = "usuarioSeq", sequenceName = "usuarios_seq", allocationSize = 1)
 public class Usuarios {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuarioSeq")
     @Column(name = "id")
     private int id;
 
+    @NotBlank(message = "El nombre es obligatorio")
     @Column(name = "nombre")
     private String nombre;
 
+    @NotBlank(message = "El correo electrónico es obligatorio")
+    @Email(message = "El correo electrónico debe tener un formato válido")
     @Column(name = "correo")
     private String correo;
 
+    @NotBlank(message = "El rol es obligatorio")
     @Column(name = "rol")
     private String rol;
 
     @Column(name = "direccion_despacho")
     private String direccionDespacho;
+
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Column(name = "password")
+    private String password;
 
     // Constructor
     public Usuarios() {
@@ -56,6 +67,10 @@ public class Usuarios {
         return direccionDespacho;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     // Setters para establecer los valores de los atributos
     public void setId(int id) {
         this.id = id;
@@ -75,5 +90,9 @@ public class Usuarios {
 
     public void setDireccionDespacho(String direccionDespacho) {
         this.direccionDespacho = direccionDespacho;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

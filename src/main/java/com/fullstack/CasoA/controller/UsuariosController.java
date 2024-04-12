@@ -1,11 +1,12 @@
 package com.fullstack.CasoA.controller;
 
 import org.springframework.beans.factory.annotation.Autowired; // Para la inyección de dependencias
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*; // Para las anotaciones de controlador REST
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
 
-// Importaciones de clases locales
+import javax.validation.Valid;
+
 import com.fullstack.CasoA.model.Usuarios;
 import com.fullstack.CasoA.service.UsuariosService;
 
@@ -30,12 +31,12 @@ public class UsuariosController {
     }
 
     @PostMapping
-    public Usuarios createUsuario(@RequestBody Usuarios usuario) {
+    public Usuarios createUsuario(@Valid @RequestBody Usuarios usuario) {
         return usuariosService.createUsuario(usuario);
     }
 
     @PutMapping("/{id}")
-    public Usuarios updateUsuario(@PathVariable int id, @RequestBody Usuarios usuario) {
+    public Usuarios updateUsuario(@PathVariable int id, @Valid @RequestBody Usuarios usuario) {
         return usuariosService.updateUsuario(id, usuario);
     }
 
@@ -43,4 +44,18 @@ public class UsuariosController {
     public void deleteUsuario(@PathVariable int id) {
         usuariosService.deleteUsuario(id);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUsuario(@RequestParam String correo, @RequestParam String password) {
+        // Buscar usuario por correo electrónico
+        Optional<Usuarios> usuarioOptional = usuariosService.getUsuarioByCorreo(correo);
+        
+        // Verificar si el usuario existe y la contraseña coincide
+        if (usuarioOptional.isPresent() && usuarioOptional.get().getPassword().equals(password)) {
+            return ResponseEntity.ok("Inicio de sesión exitoso");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
+        }
+    }
+    
 }

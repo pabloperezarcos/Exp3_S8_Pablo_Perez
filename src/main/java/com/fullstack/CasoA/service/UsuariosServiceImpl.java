@@ -58,4 +58,11 @@ public class UsuariosServiceImpl implements UsuariosService {
     public void deleteUsuario(int id) {
         usuariosRepository.deleteById(id);
     }
+
+        // Implementación del nuevo método para buscar usuario por correo electrónico
+        @Override
+        public Optional<Usuarios> getUsuarioByCorreo(String correo) {
+            return usuariosRepository.findByCorreo(correo);
+        }
+        
 }

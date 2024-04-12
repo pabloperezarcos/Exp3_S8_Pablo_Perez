@@ -23,4 +23,7 @@ public interface UsuariosService {
     // Eliminar un usuario por su ID
     void deleteUsuario(int id);
 
+    // Buscar usuario por correo electrónico
+    Optional<Usuarios> getUsuarioByCorreo(String correo);
+
 }
