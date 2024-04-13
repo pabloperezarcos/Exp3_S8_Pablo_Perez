@@ -9,6 +9,7 @@ import java.util.Optional;
 // Interfaz que extiende JpaRepository para realizar operaciones CRUD en la entidad Usuarios
 public interface UsuariosRepository extends JpaRepository<Usuarios, Integer> {
 
+    // Método para buscar un usuario por su correo electrónico
     Optional<Usuarios> findByCorreo(String correo);
 
 }

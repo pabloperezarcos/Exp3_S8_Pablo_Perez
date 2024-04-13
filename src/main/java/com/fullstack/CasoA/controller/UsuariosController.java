@@ -20,36 +20,42 @@ public class UsuariosController {
     @Autowired
     private UsuariosService usuariosService;
 
+    // Método para obtener todos los usuarios
     @GetMapping
     public List<Usuarios> getUsuarios() {
         return usuariosService.getUsuarios();
     }
 
+    // Método para obtener un usuario por su ID
     @GetMapping("/{id}")
     public Optional<Usuarios> getUsuarioById(@PathVariable int id) {
         return usuariosService.getUsuarioById(id);
     }
 
+    // Método para crear un nuevo usuario
     @PostMapping
     public Usuarios createUsuario(@Valid @RequestBody Usuarios usuario) {
         return usuariosService.createUsuario(usuario);
     }
 
+    // Método para actualizar un usuario existente
     @PutMapping("/{id}")
     public Usuarios updateUsuario(@PathVariable int id, @Valid @RequestBody Usuarios usuario) {
         return usuariosService.updateUsuario(id, usuario);
     }
 
+    // Método para eliminar un usuario existente
     @DeleteMapping("/{id}")
     public void deleteUsuario(@PathVariable int id) {
         usuariosService.deleteUsuario(id);
     }
 
+    // Método para el inicio de sesión de usuario
     @PostMapping("/login")
     public ResponseEntity<String> loginUsuario(@RequestParam String correo, @RequestParam String password) {
         // Buscar usuario por correo electrónico
         Optional<Usuarios> usuarioOptional = usuariosService.getUsuarioByCorreo(correo);
-        
+
         // Verificar si el usuario existe y la contraseña coincide
         if (usuarioOptional.isPresent() && usuarioOptional.get().getPassword().equals(password)) {
             return ResponseEntity.ok("Inicio de sesión exitoso");
@@ -57,5 +63,5 @@ public class UsuariosController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
         }
     }
-    
+
 }

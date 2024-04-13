@@ -12,32 +12,39 @@ import jakarta.persistence.SequenceGenerator; // Para especificar el uso de una 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+// Clase que representa la entidad Usuarios en la base de datos
 @Entity
 @Table(name = "usuarios")
 @SequenceGenerator(name = "usuarioSeq", sequenceName = "usuarios_seq", allocationSize = 1)
 public class Usuarios {
 
+    // Identificador único de usuario
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuarioSeq")
     @Column(name = "id")
     private int id;
 
+    // Nombre del usuario
     @NotBlank(message = "El nombre es obligatorio")
     @Column(name = "nombre")
     private String nombre;
 
+    // Correo electrónico del usuario
     @NotBlank(message = "El correo electrónico es obligatorio")
     @Email(message = "El correo electrónico debe tener un formato válido")
     @Column(name = "correo")
     private String correo;
 
+    // Rol del usuario (Administrador, Cliente, etc.)
     @NotBlank(message = "El rol es obligatorio")
     @Column(name = "rol")
     private String rol;
 
+    // Dirección de despacho del usuario
     @Column(name = "direccion_despacho")
     private String direccionDespacho;
 
+    // Contraseña del usuario
     @NotBlank(message = "La contraseña es obligatoria")
     @Column(name = "password")
     private String password;
