@@ -1,7 +1,6 @@
 package com.fullstack.CasoB.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.HttpStatus; // No se usa, puedes eliminarlo
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
