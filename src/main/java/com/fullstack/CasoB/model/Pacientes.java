@@ -1,6 +1,6 @@
 package com.fullstack.CasoB.model;
 
-// Anotaciones de JPA para el mapeo de objetos a la base de datos relacional
+// Importaciones necesarias para las anotaciones JPA y para la validación de datos
 import jakarta.persistence.Column; // Para especificar el mapeo de una columna de base de datos a un atributo de entidad Java
 import jakarta.persistence.Entity; // Para indicar que una clase Java es una entidad JPA
 import jakarta.persistence.GeneratedValue; // Para especificar cómo se generan los valores de clave primaria para una entidad
@@ -8,8 +8,7 @@ import jakarta.persistence.GenerationType; // Enumeración que define los difere
 import jakarta.persistence.Id; // Para especificar que un atributo es una clave primaria de la entidad
 import jakarta.persistence.Table; // Para especificar el nombre de la tabla en la base de datos a la que se mapea la entidad
 import jakarta.persistence.SequenceGenerator; // Para especificar el uso de una secuencia en la generación de claves primarias
-
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotBlank; // Para la validación de datos
 
 // Clase que representa la entidad Pacientes en la base de datos
 @Entity
@@ -38,7 +37,7 @@ public class Pacientes {
     @Column(name = "fecha_nacimiento")
     private String fechaNacimiento;
 
-    // Constructor
+    // Constructor vacío
     public Pacientes() {
     }
 

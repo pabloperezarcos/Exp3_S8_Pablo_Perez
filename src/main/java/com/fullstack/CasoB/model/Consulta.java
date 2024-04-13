@@ -1,6 +1,6 @@
 package com.fullstack.CasoB.model;
 
-// Anotaciones de JPA para el mapeo de objetos a la base de datos relacional
+// Importaciones necesarias para las anotaciones JPA y para la validación de datos
 import jakarta.persistence.Column; // Para especificar el mapeo de una columna de base de datos a un atributo de entidad Java
 import jakarta.persistence.Entity; // Para indicar que una clase Java es una entidad JPA
 import jakarta.persistence.GeneratedValue; // Para especificar cómo se generan los valores de clave primaria para una entidad
@@ -8,8 +8,9 @@ import jakarta.persistence.GenerationType; // Enumeración que define los difere
 import jakarta.persistence.Id; // Para especificar que un atributo es una clave primaria de la entidad
 import jakarta.persistence.Table; // Para especificar el nombre de la tabla en la base de datos a la que se mapea la entidad
 import jakarta.persistence.SequenceGenerator; // Para especificar el uso de una secuencia en la generación de claves primarias
+import javax.validation.constraints.NotBlank; // Para la validación de datos
 
-import javax.validation.constraints.NotBlank;
+import java.util.Date; // Importación para el tipo de dato Date
 
 // Clase que representa la entidad Consulta en la base de datos
 @Entity
@@ -26,7 +27,7 @@ public class Consulta {
     // Fecha de la consulta
     @NotBlank(message = "La fecha de la consulta es obligatoria")
     @Column(name = "fecha")
-    private String fecha;
+    private Date fecha;
 
     // Motivo de la consulta
     @NotBlank(message = "El motivo de la consulta es obligatorio")
@@ -42,7 +43,7 @@ public class Consulta {
     @Column(name = "id_paciente")
     private int idPaciente;
 
-    // Constructor
+    // Constructor vacío
     public Consulta() {
     }
 
@@ -51,7 +52,7 @@ public class Consulta {
         return id;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
@@ -72,7 +73,7 @@ public class Consulta {
         this.id = id;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
