@@ -3,6 +3,7 @@ package com.fullstack.CasoB.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 import com.fullstack.CasoB.model.Consulta;
 import com.fullstack.CasoB.service.ConsultaService;
@@ -31,24 +32,52 @@ public class ConsultaController {
     // Endpoint para obtener consultas por su diagnóstico
     @GetMapping("/diagnostico/{diagnostico}")
     public ResponseEntity<?> getConsultasByDiagnostico(@PathVariable String diagnostico) {
-        return consultaService.getConsultasByDiagnostico(diagnostico);
+        ResponseEntity<?> responseEntity = consultaService.getConsultasByDiagnostico(diagnostico);
+
+        Object body = responseEntity.getBody();
+
+        if (body instanceof List && !((List<?>) body).isEmpty()) {
+            return responseEntity;
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron consultas con el diagnóstico: " + diagnostico);
+        }
     }
 
-    // Endpoint para crear una nueva consulta
+    // Método para crear una nueva consulta
     @PostMapping
-    public Consulta createConsulta(@RequestBody Consulta consulta) {
-        return consultaService.createConsulta(consulta);
+    public ResponseEntity<?> createConsulta(@RequestBody Consulta consulta) {
+        try {
+            Consulta createdConsulta = consultaService.createConsulta(consulta);
+            return ResponseEntity.ok("Consulta creada exitosamente con ID: " + createdConsulta.getId());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al crear la consulta: " + e.getMessage());
+        }
     }
 
-    // Endpoint para actualizar una consulta existente
+    // Método para actualizar una consulta existente
     @PutMapping("/{id}")
-    public Consulta updateConsulta(@PathVariable int id, @RequestBody Consulta consulta) {
-        return consultaService.updateConsulta(id, consulta);
+    public ResponseEntity<?> updateConsulta(@PathVariable int id, @RequestBody Consulta consulta) {
+        try {
+            Consulta updatedConsulta = consultaService.updateConsulta(id, consulta);
+            return ResponseEntity.ok("Consulta actualizada exitosamente con ID: " + updatedConsulta.getId());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al actualizar la consulta con ID " + id + ": " + e.getMessage());
+        }
     }
 
     // Endpoint para eliminar una consulta por su ID
-    @DeleteMapping("/{id}")
-    public void deleteConsulta(@PathVariable int id) {
-        consultaService.deleteConsulta(id);
+    @DeleteMapping("/consultas/{id}")
+    public ResponseEntity<String> deleteConsulta(@PathVariable int id) {
+        try {
+            consultaService.deleteConsulta(id);
+            return ResponseEntity.ok("Consulta con ID " + id + " eliminada exitosamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("No se pudo eliminar la consulta con ID " + id + ". Error: " + e.getMessage());
+        }
     }
+
 }

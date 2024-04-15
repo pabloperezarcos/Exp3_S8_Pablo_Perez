@@ -28,26 +28,64 @@ public class UsuariosController {
 
     // Método para obtener un usuario por su ID
     @GetMapping("/{id}")
-    public Optional<Usuarios> getUsuarioById(@PathVariable int id) {
-        return usuariosService.getUsuarioById(id);
+    public ResponseEntity<?> getUsuarioById(@PathVariable int id) {
+        Optional<Usuarios> usuarioOptional = usuariosService.getUsuarioById(id);
+
+        if (usuarioOptional.isPresent()) {
+            Usuarios usuario = usuarioOptional.get();
+            return ResponseEntity.ok(usuario);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontró ningún usuario con el ID: " + id);
+        }
     }
 
     // Método para crear un nuevo usuario
     @PostMapping
-    public Usuarios createUsuario(@Valid @RequestBody Usuarios usuario) {
-        return usuariosService.createUsuario(usuario);
+    public ResponseEntity<?> createUsuario(@Valid @RequestBody Usuarios usuario) {
+        try {
+            Usuarios newUsuario = usuariosService.createUsuario(usuario);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Usuario creado exitosamente con ID: " + newUsuario.getId());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al intentar crear un nuevo usuario. Error: " + e.getMessage());
+        }
     }
 
     // Método para actualizar un usuario existente
     @PutMapping("/{id}")
-    public Usuarios updateUsuario(@PathVariable int id, @Valid @RequestBody Usuarios usuario) {
-        return usuariosService.updateUsuario(id, usuario);
+    public ResponseEntity<?> updateUsuario(@PathVariable int id, @Valid @RequestBody Usuarios usuario) {
+        try {
+            Usuarios updatedUsuario = usuariosService.updateUsuario(id, usuario);
+            if (updatedUsuario != null) {
+                return ResponseEntity.ok("Usuario actualizado exitosamente");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No se encontró ningún usuario con el ID: " + id);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al intentar actualizar el usuario con ID: " + id + ". Error: " + e.getMessage());
+        }
     }
 
     // Método para eliminar un usuario existente
     @DeleteMapping("/{id}")
-    public void deleteUsuario(@PathVariable int id) {
-        usuariosService.deleteUsuario(id);
+    public ResponseEntity<String> deleteUsuario(@PathVariable int id) {
+        Optional<Usuarios> usuarioOptional = usuariosService.getUsuarioById(id);
+        if (usuarioOptional.isPresent()) {
+            try {
+                usuariosService.deleteUsuario(id);
+                return ResponseEntity.ok("Usuario eliminado exitosamente");
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Error al intentar eliminar al usuario con ID: " + id);
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontró ningún usuario con el ID: " + id);
+        }
     }
 
     // Método para el inicio de sesión de usuario
