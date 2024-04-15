@@ -78,7 +78,7 @@ public class ConsultaController {
     }
 
     // Endpoint para eliminar una consulta por su ID
-    @DeleteMapping("/consultas/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteConsulta(@PathVariable int id) {
         try {
             // Elimina la consulta y devuelve un mensaje de éxito

@@ -83,7 +83,7 @@ public class PacientesController {
     }
 
     // Endpoint para eliminar un paciente por su ID
-    @DeleteMapping("/pacientes/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePaciente(@PathVariable int id) {
         try {
             // Elimina el paciente y devuelve un mensaje de éxito
