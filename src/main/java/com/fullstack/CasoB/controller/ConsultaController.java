@@ -1,14 +1,18 @@
 package com.fullstack.CasoB.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
-
+import com.fullstack.CasoB.assembler.ConsultaAssembler;
 import com.fullstack.CasoB.model.Consulta;
 import com.fullstack.CasoB.service.ConsultaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/consultas")
@@ -17,16 +21,31 @@ public class ConsultaController {
     @Autowired
     private ConsultaService consultaService;
 
+    @Autowired
+    private ConsultaAssembler consultaAssembler;
+
     // Endpoint para obtener todas las consultas
     @GetMapping
-    public List<Consulta> getConsultas() {
-        return consultaService.getConsultas();
+    public ResponseEntity<CollectionModel<EntityModel<Consulta>>> getConsultas() {
+        List<EntityModel<Consulta>> consultasEnlazadas = consultaService.getConsultas().stream()
+                .map(consultaAssembler::toModel)
+                .collect(Collectors.toList());
+
+        CollectionModel<EntityModel<Consulta>> collectionModel = CollectionModel.of(consultasEnlazadas);
+
+        return ResponseEntity.ok(collectionModel);
     }
 
     // Endpoint para obtener una consulta por su ID
     @GetMapping("/{id}")
-    public ResponseEntity<?> getConsultaById(@PathVariable int id) {
-        return consultaService.getConsultaById(id);
+    public ResponseEntity<EntityModel<Consulta>> getConsultaById(@PathVariable int id) {
+        Optional<Consulta> consulta = Optional.empty();
+
+        EntityModel<Consulta> consultaEnlazada = consulta
+                .map(consultaAssembler::toModel)
+                .orElseGet(() -> EntityModel.of(new Consulta()));
+
+        return ResponseEntity.ok(consultaEnlazada);
     }
 
     // Endpoint para obtener consultas por su diagnóstico
@@ -90,5 +109,4 @@ public class ConsultaController {
                     .body("No se pudo eliminar la consulta con ID " + id + ". Error: " + e.getMessage());
         }
     }
-
 }
