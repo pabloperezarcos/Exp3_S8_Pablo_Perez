@@ -12,31 +12,14 @@ import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
-/**
- * El ensamblador "UsuariosModelAssembler" se encarga de convertir objetos de
- * modelo
- * (como "Usuarios") en EntityModel con enlaces HATEOAS. Esto permite que las
- * respuestas
- * RESTful incluyan enlaces útiles para interactuar con la API.
- */
 @Component
 public class UsuariosModelAssembler extends RepresentationModelAssemblerSupport<Usuarios, EntityModel<Usuarios>> {
 
-    /**
-     * Constructor que especifica el controlador y el tipo del modelo HATEOAS.
-     * Utiliza "UsuariosController" como controlador base y "EntityModel<Usuarios>"
-     * como tipo de modelo.
-     */
     @SuppressWarnings("unchecked")
     public UsuariosModelAssembler() {
         super(UsuariosController.class, (Class<EntityModel<Usuarios>>) (Class<?>) EntityModel.class);
     }
 
-    /**
-     * Método para convertir un objeto "Usuarios" en un "EntityModel" que incluye
-     * enlaces HATEOAS.
-     * Los enlaces se crean utilizando "WebMvcLinkBuilder".
-     */
     @SuppressWarnings("null")
     @Override
     public EntityModel<Usuarios> toModel(Usuarios usuario) {
