@@ -7,10 +7,10 @@ import org.springframework.context.annotation.ComponentScan; // especifica los p
 @SpringBootApplication
 // Usamos la herramienta para que busque en los directorios "CasoA" y "CasoB" para poder trabajar con ambos casos con nuestro archivo main.
 @ComponentScan(basePackages = {"com.fullstack.CasoA", "com.fullstack.CasoB"})
-public class Exp2S6Application {
+public class Exp3S8Application {
 
 	public static void main(String[] args) { // Método principal que inicia la aplicación
-		SpringApplication.run(Exp2S6Application.class, args); // Método para iniciar la aplicación Spring Boot
+		SpringApplication.run(Exp3S8Application.class, args); // Método para iniciar la aplicación Spring Boot
 	}
 
 }
