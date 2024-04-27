@@ -1,0 +1,7 @@
+com\fullstack\exp3_s8\CasoB\service\ConsultaServiceTest.class
+com\fullstack\exp3_s8\Exp3S8ApplicationTests.class
+com\fullstack\exp3_s8\CasoB\controller\ConsultaControllerTest.class
+com\fullstack\exp3_s8\CasoA\repository\UsuariosRepositoryTest.class
+com\fullstack\exp3_s8\CasoA\controller\UsuariosControllerTest.class
+com\fullstack\exp3_s8\CasoB\repository\ConsultaRepositoryTest.class
+com\fullstack\exp3_s8\CasoA\service\UsuariosServiceTest.class
