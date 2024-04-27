@@ -7,8 +7,11 @@ import com.fullstack.CasoA.model.Usuarios;
 import com.fullstack.CasoA.repository.UsuariosRepository;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
+//import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) 
 public class UsuariosRepositoryTest {
 
     @Autowired
