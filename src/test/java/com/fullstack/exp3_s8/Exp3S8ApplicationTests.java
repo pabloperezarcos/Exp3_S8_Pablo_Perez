@@ -1,10 +1,10 @@
-package com.fullstack.exp1_s3;
+package com.fullstack.exp3_s8;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Exp1S3ApplicationTests {
+class Exp3S8ApplicationTests {
 
 	@Test
 	void contextLoads() {
