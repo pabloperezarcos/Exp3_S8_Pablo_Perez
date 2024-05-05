@@ -73,6 +73,26 @@ public class UsuariosController {
         }
     }
 
+    // Método para actualizar un usuario existente
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUsuario(@PathVariable int id, @Valid @RequestBody Usuarios usuario) {
+        try {
+            // Actualiza el usuario y devuelve un mensaje de éxito
+            Usuarios updatedUsuario = usuariosService.updateUsuario(id, usuario);
+            if (updatedUsuario != null) {
+                return ResponseEntity.ok("Usuario actualizado exitosamente");
+            } else {
+                // Devuelve un mensaje de error si no se encontró el usuario
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No se encontró ningún usuario con el ID: " + id);
+            }
+        } catch (Exception e) {
+            // Devuelve un mensaje de error si no se pudo actualizar el usuario
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al intentar actualizar el usuario con ID: " + id + ". Error: " + e.getMessage());
+        }
+    }
+
     // Método para eliminar un usuario existente
     @DeleteMapping("/{id}")
     public ResponseEntity<EntityModel<?>> deleteUsuario(@PathVariable int id) {
@@ -91,9 +111,24 @@ public class UsuariosController {
             }
         } else {
             EntityModel<String> notFoundModel = EntityModel.of("No se encontró el usuario",
-                    linkTo(methodOn(UsuariosController.class).getUsuarios()).withRel("usuarios")); // Enlace de
-                                                                                                   // colección
+                    linkTo(methodOn(UsuariosController.class).getUsuarios()).withRel("usuarios")); // Enlace decolección
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFoundModel); // Manejo de errores
+        }
+    }
+
+    // Método para el inicio de sesión de usuario
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUsuario(@RequestParam String correo, @RequestParam String password) {
+        // Busca el usuario por su correo electrónico
+        Optional<Usuarios> usuarioOptional = usuariosService.getUsuarioByCorreo(correo);
+
+        // Verifica si el usuario existe y si la contraseña coincide
+        if (usuarioOptional.isPresent() && usuarioOptional.get().getPassword().equals(password)) {
+            // Devuelve un mensaje de éxito si el inicio de sesión fue exitoso
+            return ResponseEntity.ok("Inicio de sesión exitoso");
+        } else {
+            // Devuelve un mensaje de error si las credenciales son incorrectas
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
         }
     }
 }
