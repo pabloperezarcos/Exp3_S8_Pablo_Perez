@@ -95,27 +95,23 @@ public class UsuariosController {
 
     // Método para eliminar un usuario existente
     @DeleteMapping("/{id}")
-    public ResponseEntity<EntityModel<?>> deleteUsuario(@PathVariable int id) {
+    public ResponseEntity<?> deleteUsuario(@PathVariable int id) {
         Optional<Usuarios> usuarioOptional = usuariosService.getUsuarioById(id);
-
+    
         if (usuarioOptional.isPresent()) {
             try {
                 usuariosService.deleteUsuario(id);
-                EntityModel<String> successModel = EntityModel.of("Usuario eliminado exitosamente",
-                        linkTo(methodOn(UsuariosController.class).deleteUsuario(id)).withSelfRel()); // Enlace
-                return ResponseEntity.ok(successModel); // Confirmación de éxito
+                return ResponseEntity.ok("Usuario eliminado exitosamente");
             } catch (Exception e) {
-                EntityModel<String> errorModel = EntityModel
-                        .of("Error al intentar eliminar el usuario: " + e.getMessage());
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorModel);
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Error al intentar eliminar el usuario: " + e.getMessage());
             }
         } else {
-            EntityModel<String> notFoundModel = EntityModel.of("No se encontró el usuario",
-                    linkTo(methodOn(UsuariosController.class).getUsuarios()).withRel("usuarios")); // Enlace decolección
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFoundModel); // Manejo de errores
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontró el usuario");
         }
     }
-
+   
     // Método para el inicio de sesión de usuario
     @PostMapping("/login")
     public ResponseEntity<String> loginUsuario(@RequestParam String correo, @RequestParam String password) {
