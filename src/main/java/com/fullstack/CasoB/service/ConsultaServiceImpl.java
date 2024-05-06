@@ -3,6 +3,7 @@ package com.fullstack.CasoB.service;
 import com.fullstack.CasoB.model.Consulta;
 import com.fullstack.CasoB.repository.ConsultaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,11 @@ public class ConsultaServiceImpl implements ConsultaService {
     @Override
     public ResponseEntity<?> getConsultaById(int id) {
         Optional<Consulta> consulta = consultaRepository.findById(id);
-        return consulta.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return consulta.map(c -> {
+            EntityModel<Consulta> resource = EntityModel.of(c);
+            // resource.add(linkTo(methodOn(ConsultaController.class).getConsultaById(id)).withSelfRel());
+            return ResponseEntity.ok(resource);
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     // Método para obtener consultas por su diagnóstico
