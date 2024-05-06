@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -38,14 +37,8 @@ public class ConsultaController {
 
     // Endpoint para obtener una consulta por su ID
     @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<Consulta>> getConsultaById(@PathVariable int id) {
-        Optional<Consulta> consulta = Optional.empty();
-
-        EntityModel<Consulta> consultaEnlazada = consulta
-                .map(consultaAssembler::toModel)
-                .orElseGet(() -> EntityModel.of(new Consulta()));
-
-        return ResponseEntity.ok(consultaEnlazada);
+    public ResponseEntity<?> getConsultaById(@PathVariable int id) {
+        return consultaService.getConsultaById(id);
     }
 
     // Endpoint para obtener consultas por su diagnóstico
